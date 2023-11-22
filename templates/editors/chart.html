@@ -1,0 +1,46 @@
+{% extends 'base.html' %} {% block content %}
+<h2>Bar Chart</h2>
+<canvas id="barChart" width="300" height="80"></canvas>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  $(document).ready(function(){
+    var ctx = document.getElementById('barChart').getContext('2d');
+    var labels = [];
+    var data = [];
+
+    // Populate labels and data arrays
+    {% for editor_data in editors_data %}
+      labels.push('{{ editor_data.editor_name }}');
+      data.push({{ editor_data.num_users }});
+    {% endfor %}
+
+    var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Number of Users',
+          data: data,
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  });
+</script>
+{% endblock %}
+
+
